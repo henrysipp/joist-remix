@@ -3,7 +3,6 @@ import { createRequestListener } from '@remix-run/node-fetch-server'
 
 import { router } from './app/router.tsx'
 
-console.log({ env: JSON.stringify(process.env.DATABASE_URL) })
 
 let server = http.createServer(
   createRequestListener(async (request) => {

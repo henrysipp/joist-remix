@@ -1,9 +1,11 @@
-import { createRouter, redirect, type RouteHandlers } from "@remix-run/fetch-router";
+import { createRouter, createStorageKey, redirect, type Middleware, type RouteHandlers } from "@remix-run/fetch-router";
 import { logger } from "@remix-run/fetch-router/logger-middleware";
 import { routes } from "src/routes";
-import { render } from "./utils/render";
+import { render } from "src/app/utils/render";
 import { newEntityManager } from "src/db";
-import { Author } from "src/entities";
+import { Author, EntityManager } from "src/entities";
+import { getEntityManager, requestContextStorage } from "./utils/context";
+import { Layout } from "./layout";
 
 export let router = createRouter({});
 
@@ -11,28 +13,42 @@ if (process.env.NODE_ENV === "development") {
   router.use(logger());
 }
 
-const em = newEntityManager();
+export const EM_KEY = createStorageKey<EntityManager>()
+
+export let storeContext: Middleware = (context, next) => {
+  return requestContextStorage.run(context, () => next())
+}
+
+router.use(storeContext);
+router.use(({ storage }) => {
+  const em = newEntityManager();
+  storage.set(EM_KEY, em);
+});
 
 export let home: RouteHandlers<typeof routes.home> = {
   use: [],
   handlers: {
-    index() {
-      const authors = em.getEntities(Author);
-
+    async index() {
+      const em = getEntityManager();
+      const authors = await em.find(Author, {});
       return render(
-        <div>
+        <Layout>
           <p>Hello, huh!</p>
-          {authors.map((author) => (
-            <p>{author.firstName}</p>
-          ))}
+          <ul>
+            {authors.map((author) => (
+              <li key={author.id}>Author: {author.firstName}</li>
+            ))}
+          </ul>
           <form action={routes.home.action.href()} method="POST">
-            <button type="submit">Create Author</button>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Create Author</button>
           </form>
-        </div>,
+        </Layout>,
       );
     },
-    async action() {
+    async action( { }) {
+      const em = getEntityManager();
       await em.create(Author, { firstName: "a1" });
+      await em.flush();
       return redirect(routes.home.index.href());
     },
   },
