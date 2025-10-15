@@ -1,0 +1,53 @@
+{
+  "name": "joist-ts-sample",
+  "scripts": {
+    "dev": "NODE_ENV=development bun --watch src/server.ts",
+    "dev:browser": "esbuild src/app/assets/*.tsx --outbase=app/assets --outdir=public/assets --bundle --minify --splitting --format=esm --entry-names='[dir]/[name]' --chunk-names='chunks/[name]-[hash]' --sourcemap --watch",
+    "start": "bun src/server.ts",
+    "typecheck": "tsc --noEmit",
+
+    "codegen": "bun joist-codegen",
+    "db": "docker compose up --wait db && bun pg-migrate && bun codegen",
+    "redb": "docker compose exec db ./reset.sh && bun pg-migrate && bun codegen",
+    "test": "jest",
+    "pg-migrate": "env-cmd tsx ./node_modules/joist-migration-utils",
+    "pg-new-migration": "npx node-pg-migrate create",
+    "joist-codegen": "env-cmd tsx ./node_modules/joist-codegen",
+    "format": "prettier --write 'src/**/*.{ts,js,tsx,jsx}'",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephenh/joist-ts-sample.git"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/stephenh/joist-ts-sample#readme",
+  "prettier": {
+    "trailingComma": "all",
+    "printWidth": 120
+  },
+  "dependencies": {
+    "@remix-run/dom": "^0.0.0-experimental-remix-jam.1",
+    "@remix-run/events": "^0.0.0-experimental-remix-jam.1",
+    "@remix-run/fetch-router": "^0.6.0",
+    "@remix-run/file-storage": "^0.9.0",
+    "@remix-run/headers": "^0.13.0",
+    "@remix-run/node-fetch-server": "^0.10.0",
+    "joist-codegen": "^1.276.2",
+    "joist-migration-utils": "^1.276.2",
+    "joist-orm": "^1.277.0",
+    "remix-the-web": "github:remix-run/remix#main"
+  },
+  "devDependencies": {
+    "@homebound/tsconfig": "^1.1.1",
+    "@jest/globals": "30.0.0-alpha.2",
+    "@swc/core": "^1.13.5",
+    "@swc/jest": "^0.2.39",
+    "env-cmd": "^10.1.0",
+    "jest": "30.0.0-alpha.2",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "yarn@3.5.0"
+}
