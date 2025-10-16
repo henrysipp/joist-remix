@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../app/components/assets/Entry.tsx"],
+  "sourcesContent": ["import { createFrame } from '@remix-run/dom'\n\ncreateFrame(document, {\n  async loadModule(moduleUrl, name) {\n    let mod = await import(moduleUrl)\n    if (!mod) {\n      throw new Error(`Unknown module: ${moduleUrl}#${name}`)\n    }\n\n    let Component = mod[name]\n    if (!Component) {\n      throw new Error(`Unknown component: ${moduleUrl}#${name}`)\n    }\n\n    return Component\n  },\n\n  async resolveFrame(frameUrl) {\n    let res = await fetch(frameUrl)\n    if (res.ok) {\n      return res.text()\n    }\n\n    throw new Error(`Failed to fetch ${frameUrl}`)\n  },\n})"],
+  "mappings": "+CAEAA,EAAY,SAAU,CACpB,MAAM,WAAWC,EAAWC,EAAM,CAChC,IAAIC,EAAM,MAAM,OAAOF,GACvB,GAAI,CAACE,EACH,MAAM,IAAI,MAAM,mBAAmBF,CAAS,IAAIC,CAAI,EAAE,EAGxD,IAAIE,EAAYD,EAAID,CAAI,EACxB,GAAI,CAACE,EACH,MAAM,IAAI,MAAM,sBAAsBH,CAAS,IAAIC,CAAI,EAAE,EAG3D,OAAOE,CACT,EAEA,MAAM,aAAaC,EAAU,CAC3B,IAAIC,EAAM,MAAM,MAAMD,CAAQ,EAC9B,GAAIC,EAAI,GACN,OAAOA,EAAI,KAAK,EAGlB,MAAM,IAAI,MAAM,mBAAmBD,CAAQ,EAAE,CAC/C,CACF,CAAC",
+  "names": ["createFrame", "moduleUrl", "name", "mod", "Component", "frameUrl", "res"]
+}

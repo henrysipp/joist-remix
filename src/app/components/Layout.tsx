@@ -13,6 +13,8 @@ export function Document({ title = "Joist TS Sample", children }: { title?: stri
           type="module"
           src="https://early.webawesome.com/webawesome@3.0.0-beta.6/dist/webawesome.loader.js"
         ></script>
+        <script type="module" async src={routes.assets.href({ path: 'Entry.js' })} />
+
         {/* <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> */}
         {/* <script type="module" async src={routes.assets.href({ path: 'entry.js' })} /> */}
       </head>

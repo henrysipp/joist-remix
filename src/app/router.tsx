@@ -7,6 +7,7 @@ import { Author, EntityManager } from "src/entities";
 import { getEntityManager, requestContextStorage, storeContext } from "./utils/context";
 import { HomeController } from "./controllers/home";
 import { AuthorsController } from "./controllers/authors";
+import { assets } from "src/app/controllers/public";
 
 export let router = createRouter({});
 
@@ -14,7 +15,7 @@ if (process.env.NODE_ENV === "development") {
   router.use(logger());
 }
 
-export const EM_KEY = createStorageKey<EntityManager>()
+export const EM_KEY = createStorageKey<EntityManager>();
 
 router.use(storeContext);
 router.use(({ storage }) => {
@@ -22,6 +23,6 @@ router.use(({ storage }) => {
   storage.set(EM_KEY, em);
 });
 
-
+router.map(routes.assets, assets);
 router.map(routes.home, HomeController);
 router.map(routes.authors, AuthorsController);

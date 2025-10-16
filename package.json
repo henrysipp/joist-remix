@@ -2,7 +2,7 @@
   "name": "joist-ts-sample",
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/server.ts",
-    "dev:browser": "esbuild src/app/assets/*.tsx --outbase=app/assets --outdir=public/assets --bundle --minify --splitting --format=esm --entry-names='[dir]/[name]' --chunk-names='chunks/[name]-[hash]' --sourcemap --watch",
+    "dev:browser": "esbuild src/app/components/assets/*.tsx --outbase=src/app/components/assets --outdir=src/public/assets --bundle --minify --splitting --format=esm --entry-names='[dir]/[name]' --chunk-names='chunks/[name]-[hash]' --sourcemap --watch --platform=browser",
     "start": "bun src/server.ts",
     "typecheck": "tsc --noEmit",
 
@@ -27,8 +27,8 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@remix-run/dom": "^0.0.0-experimental-remix-jam.1",
-    "@remix-run/events": "^0.0.0-experimental-remix-jam.1",
+    "@remix-run/dom": "jam",
+    "@remix-run/events": "jam",
     "@remix-run/fetch-router": "^0.6.0",
     "@remix-run/file-storage": "^0.9.0",
     "@remix-run/headers": "^0.13.0",
