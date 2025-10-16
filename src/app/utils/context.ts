@@ -1,9 +1,13 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
-import type { RequestContext } from '@remix-run/fetch-router'
+import type { Middleware, RequestContext } from "@remix-run/fetch-router";
 
 import { EM_KEY } from '../router.tsx'
 
 export const requestContextStorage = new AsyncLocalStorage<RequestContext>()
+
+export let storeContext: Middleware = (context, next) => {
+  return requestContextStorage.run(context, () => next())
+}
 
 /**
  * Get the current RequestContext from AsyncLocalStorage.
