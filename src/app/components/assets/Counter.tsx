@@ -1,8 +1,9 @@
 import { press } from "@remix-run/events/press";
 import { type Remix, hydrated } from '@remix-run/dom'
+import { routes } from "src/routes.ts";
 
 export const Counter =  hydrated(
-  "/assets/Counter.js#Counter",
+  routes.assets.href({ path: "Counter.js#Counter" }),
   function(this: Remix.Handle, {}) {
   let counter = 0
 
